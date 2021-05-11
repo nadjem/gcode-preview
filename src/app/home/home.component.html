@@ -1,0 +1,25 @@
+<div class="app-home">
+    <mat-toolbar>
+        <span>gcode preview</span>
+      </mat-toolbar>
+      <div class="home-wrapper">
+        <div class="row">
+            <div class="col s2 side-bar">
+                <button mat-raised-button >choose a File</button>
+                <button mat-raised-button color="primary" (click)="replay()">replay</button>
+            </div>
+            <div class="col s10 main-wrapper">
+                <div>
+                    <canvas #previews></canvas>
+                    
+                    <div>topLayerColor: {{topLayerColor}}</div>
+                    <div>lastSegmentColor: {{lastSegmentColor}}</div>
+                    <div>endLayer: {{endLayer}}</div>
+                    <div>startLayer: {{startLayer}}</div>
+                    <div>lineWidth: {{lineWidth}}</div>
+                  </div>
+            </div>
+          </div>
+      </div>
+</div>
+
