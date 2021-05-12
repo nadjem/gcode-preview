@@ -8,19 +8,21 @@ import * as THREE from 'three';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit,AfterViewInit {
-  @ViewChild('previews') previews: ElementRef;
+  @ViewChild('previews', {static: false}) previews: ElementRef<HTMLCanvasElement>;
+  @ViewChild("selectFile") selectFile;
   preview:WebGLPreview;
-  topLayerColor="'lime'";
-  lastSegmentColor="'red'";
+  topLayerColor="#fcba03";
+  lastSegmentColor="#db042f";
   endLayer;
   startLayer=20;
-  lineWidth;
+  lineWidth = 2;
   layerCount;
   filePath = "assets/dragoncito.gcode"
+  played = false;
+  public context:any;
   constructor() { }
 
   ngOnInit(): void {
-    
 
   }
   ngAfterViewInit(): void{
@@ -34,12 +36,12 @@ export class HomeComponent implements OnInit,AfterViewInit {
       buildVolume: {x: 220, y:220, z: 250},
       initialCameraPosition: [0, 400, 450]
     });
-    this.loadFiles(this.filePath);
+    this.context = this.previews.nativeElement.getContext('webgl2');
   }
 
   async loadFiles(path){
     const lines1 = await this.fetchGcode(path);
-    this.loadPreviewChunked(this.preview, lines1, 50);
+    this.loadPreviewChunked(this.preview, lines1, 5);
   }
   data() {
     return {
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit,AfterViewInit {
     this.layerCount = this.preview.layers.length;
   }
   async fetchGcode(url) {
+    console.log(url)
    const response = await fetch(url);
     if (response.status !== 200) {
       throw new Error(`status code: ${response.status}`);
@@ -62,7 +65,6 @@ export class HomeComponent implements OnInit,AfterViewInit {
     let chunkSize = 250;
     let c = 0;
     const id = '__animationTimer__' + Math.random().toString(36).substr(2, 9);
-    console.log(lines)
     const loadProgressive = (preview) => {
       const start = c*chunkSize;
       const end = (c+1)*chunkSize;
@@ -81,7 +83,37 @@ export class HomeComponent implements OnInit,AfterViewInit {
   }
 
   replay(){
+    this.reset();
     this.loadFiles(this.filePath);
   }
 
+  play(){
+    this.played = true;
+    this.loadFiles(this.filePath);
+  }
+
+  handleUpload(e):void{
+    console.log(e)
+    let path = this.selectFile.nativeElement.files[0].path;
+    this.filePath = path;
+ }
+  reset(){
+       
+    //this.context.clear(0, 0, this.previews.nativeElement.width, this.previews.nativeElement.height);
+    this.preview.clear()
+    this.filePath = ""
+    
+    this.preview = new WebGLPreview({
+      canvas: this.previews.nativeElement,
+      endLayer: this.endLayer,
+      startLayer: this.startLayer,
+      topLayerColor: new THREE.Color(this.topLayerColor).getHex(),
+      lastSegmentColor: new THREE.Color(this.lastSegmentColor).getHex(),
+      lineWidth: this.lineWidth,
+      buildVolume: {x: 220, y:220, z: 250},
+      initialCameraPosition: [0, 400, 450]
+    });
+  
+    
+  }
 }

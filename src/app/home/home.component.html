@@ -4,19 +4,32 @@
       </mat-toolbar>
       <div class="home-wrapper">
         <div class="row">
-            <div class="col s2 side-bar">
-                <button mat-raised-button >choose a File</button>
-                <button mat-raised-button color="primary" (click)="replay()">replay</button>
+            <div class="col s3 side-bar">
+                <div class="row"><div class="row"><button mat-raised-button class="btn-file" >choose a File
+                    <input #selectFile type="file" (change)="handleUpload($event)" class="custom-file-input">
+                </button></div></div>
+                
+                <div class="row">
+                    <button *ngIf="played" mat-raised-button color="primary" (click)="replay()">replay</button>
+                    <button *ngIf="!played" mat-raised-button color="primary" (click)="play()">play</button>
+                </div>
+                <div class="row">
+                    <button *ngIf="played" mat-raised-button color="primary" (click)="replay()">reset</button>
+                </div>
+                
+                
+                
+                    <div class="row">topLayerColor: {{topLayerColor}}</div>
+                    <div class="row">lastSegmentColor: {{lastSegmentColor}}</div>
+                    <div class="row">endLayer: {{endLayer}}</div>
+                    <div class="row">startLayer: {{startLayer}}</div>
+                    <div class="row">lineWidth: {{lineWidth}}</div>
             </div>
-            <div class="col s10 main-wrapper">
+            <div class="col s9 main-wrapper">
                 <div>
                     <canvas #previews></canvas>
                     
-                    <div>topLayerColor: {{topLayerColor}}</div>
-                    <div>lastSegmentColor: {{lastSegmentColor}}</div>
-                    <div>endLayer: {{endLayer}}</div>
-                    <div>startLayer: {{startLayer}}</div>
-                    <div>lineWidth: {{lineWidth}}</div>
+                    
                   </div>
             </div>
           </div>

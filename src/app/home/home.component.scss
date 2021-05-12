@@ -4,6 +4,27 @@
     p{
         display:inline-block;
     }
+    .home-wrapper{
+        padding: 0 10px;
+    }
+    .custom-file-input::-webkit-file-upload-button {
+        visibility: hidden;
+      }
+      .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
     .side-bar{
         height: calc(100vh - 64px);
         padding: 10px 0 0 10px;
